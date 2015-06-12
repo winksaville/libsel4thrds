@@ -77,9 +77,26 @@ void thrd_doNothing() {
 }
 
 /**
- * Create a thrd in a new process
+ * Configure a thrd
  */
-void thrd_process_create(thrd_env_t *env, thrd_t *thread) {
+void thrd_configure(thrd_env_t *env, thrd_t *thread) {
+    UNUSED int error;
+
+    error = vka_alloc_endpoint(&env->vka, &thread->local_endpoint);
+    assert(error == 0);
+
+    thread->is_process = false;
+    thread->fault_endpoint = env->endpoint;
+    seL4_CapData_t data = seL4_CapData_Guard_new(0, seL4_WordBits - env->cspace_size_bits);
+    error = sel4utils_configure_thread(&env->vka, &env->vspace, &env->vspace, env->endpoint,
+                                       THRDS_OUR_PRIO - 1, env->cspace_root, data, &thread->thread);
+    assert(error == 0);
+}
+
+/**
+ * Configure a new process
+ */
+void thrd_process_configure(thrd_env_t *env, thrd_t *thread) {
     UNUSED int error;
 
     error = vka_alloc_endpoint(&env->vka, &thread->local_endpoint);
@@ -186,23 +203,6 @@ void thrd_cleanup(thrd_env_t *env, thrd_t *thread) {
     }
 }
 
-
-/**
- * Create a thrd
- */
-void thrd_create(thrd_env_t *env, thrd_t *thread) {
-    UNUSED int error;
-
-    error = vka_alloc_endpoint(&env->vka, &thread->local_endpoint);
-    assert(error == 0);
-
-    thread->is_process = false;
-    thread->fault_endpoint = env->endpoint;
-    seL4_CapData_t data = seL4_CapData_Guard_new(0, seL4_WordBits - env->cspace_size_bits);
-    error = sel4utils_configure_thread(&env->vka, &env->vspace, &env->vspace, env->endpoint,
-                                       THRDS_OUR_PRIO - 1, env->cspace_root, data, &thread->thread);
-    assert(error == 0);
-}
 
 /**
  * Wait for another thrd to finish

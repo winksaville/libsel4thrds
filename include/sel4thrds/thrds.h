@@ -91,12 +91,12 @@ typedef int (*thrd_fn_t)(seL4_Word, seL4_Word, seL4_Word, seL4_Word);
 /* do nothing */
 void thrd_doNothing();
 
-/* create a thrd in the current vspace and current cspace */
-void thrd_create(thrd_env_t *env, thrd_t *thrd);
+/* Configure a thrd in the current vspace and current cspace */
+void thrd_configure(thrd_env_t *env, thrd_t *thrd);
 
-/* create a thrd with a clone of the current vspace loadable elf segments,
+/* Configure a process which is a clone of the current vspace loadable elf segments,
  * and a new cspace */
-void thrd_process_create(thrd_env_t *env, thrd_t *thrd);
+void thrd_process_configure(thrd_env_t *env, thrd_t *thrd);
 
 /* set a helper threads priority */
 void thrd_set_priority(thrd_t *thrd, seL4_Word prio);
