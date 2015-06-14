@@ -11,5 +11,5 @@
 
 libs-$(CONFIG_LIB_SEL4_THRDS) += libsel4thrds
 
-libsel4thrds: libsel4 $(libc) libsel4vka libsel4utils libsel4platsupport \
+libsel4thrds: libsel4 $(libc) libsel4vka libsel4utils libsel4platsupport libsel4allocman \
                  libsel4vspace libsel4simple libutils common
