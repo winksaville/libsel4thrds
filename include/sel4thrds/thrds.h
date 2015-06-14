@@ -88,8 +88,8 @@ typedef struct thrd {
 
 typedef int (*thrd_fn_t)(seL4_Word, seL4_Word, seL4_Word, seL4_Word);
 
-/* do nothing */
-void thrd_doNothing();
+/* Initialize the module */
+void thrd_initialize();
 
 /* Configure a thrd in the current vspace and current cspace */
 void thrd_configure(thrd_env_t *env, thrd_t *thrd);

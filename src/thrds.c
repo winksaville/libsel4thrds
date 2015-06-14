@@ -21,6 +21,8 @@
 
 #include <sel4thrds/thrds.h>
 
+#include "runtime_env.h"
+
 /**
  * Create the arguments
  */
@@ -70,10 +72,20 @@ static void invoke_thrd(int argc, char **argv) {
     /* does not return */
 }
 
+
 #include <stdio.h>
 
-void thrd_doNothing() {
-  printf("thrd_doNothing:+-\n");
+
+// Runtime environment
+static runtime_env_t runtime_env;
+
+/**
+ * Initialize the threading module
+ */
+void thrd_initialize() {
+  printf("thrd_initialize:+ *\n");
+  runtime_env_init(&runtime_env);
+  printf("thrd_initialize:- *\n");
 }
 
 /**
